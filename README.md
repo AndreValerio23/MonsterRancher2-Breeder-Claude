@@ -70,4 +70,3 @@ Baseado no "Monster Rancher: Combining FAQ" de Kurasu Soratobu e no pacote R
 
 ## Disclaimer
 Projeto fan-made, sem afiliação com Koei Tecmo / Tecmo.
-# MonsterRancher2-Breeder-Claude
