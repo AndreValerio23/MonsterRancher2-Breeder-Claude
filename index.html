@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MR2 Breeding Calculator</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323:wght@400&family=Inconsolata:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- CSS Estático Extraído -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+    <h1>MONSTER RANCHER 2<br>BREEDING CALCULATOR</h1>
+    <div class="subtitle">▸ Calculadora de Combinações ◂</div>
+</header>
+
+<main>
+    <!-- PARENT 1 -->
+    <div class="panel" data-label="PARENT 1 — PAI">
+        <!-- Save Section Frontend -> Parseia local com JS puro -->
+        <div class="save-section" id="save-section">
+            <h4>📂 LER ARQUIVO DE SAVE</h4>
+            <p class="save-note">No navegador, faremos leitura 100% segura do seu .sav local</p>
+            <input type="file" id="save-input1" accept=".sav" style="font-size: 14px; margin-top: 6px;">
+        </div>
+
+        <label>Nome do Monstro</label>
+        <input type="text" id="p1-name" placeholder="Ex: Collie" value="">
+
+        <div class="breed-row">
+            <div>
+                <label>Raça Principal</label>
+                <select id="p1-main">
+                    <option value="">— selecionar —</option>
+                </select>
+            </div>
+            <div>
+                <label>Sub-Raça</label>
+                <select id="p1-sub">
+                    <option value="">— selecionar —</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-box"><label>❤ LIFE</label><input type="number" id="p1-life" min="0" max="999"></div>
+            <div class="stat-box"><label>💪 POWER</label><input type="number" id="p1-pow" min="0" max="999"></div>
+            <div class="stat-box"><label>🧠 INTEL</label><input type="number" id="p1-int" min="0" max="999"></div>
+            <div class="stat-box"><label>⚔ SKILL</label><input type="number" id="p1-skl" min="0" max="999"></div>
+            <div class="stat-box"><label>💨 SPEED</label><input type="number" id="p1-spd" min="0" max="999"></div>
+            <div class="stat-box"><label>🛡 DEFENSE</label><input type="number" id="p1-def" min="0" max="999"></div>
+        </div>
+
+        <div class="adj-display" id="adj1">
+            <h4>STATS AJUSTADOS</h4>
+            <div id="adj1-rows"></div>
+            <div class="order-display" style="margin-top:8px">
+                <span class="order-label">ORDEM: </span>
+                <span class="order-val" id="adj1-order"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- PARENT 2 -->
+    <div class="panel" data-label="PARENT 2 — MÃE / CONGELADO">
+        <div class="save-section">
+            <h4>📂 LER ARQUIVO DE SAVE</h4>
+            <input type="file" id="save-input2" accept=".sav" style="font-size: 14px; margin-top: 6px;">
+        </div>
+
+        <label>Nome do Monstro</label>
+        <input type="text" id="p2-name" placeholder="Ex: Marigold" value="">
+
+        <div class="breed-row">
+            <div>
+                <label>Raça Principal</label>
+                <select id="p2-main">
+                    <option value="">— selecionar —</option>
+                </select>
+            </div>
+            <div>
+                <label>Sub-Raça</label>
+                <select id="p2-sub">
+                    <option value="">— selecionar —</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-box"><label>❤ LIFE</label><input type="number" id="p2-life" min="0" max="999"></div>
+            <div class="stat-box"><label>💪 POWER</label><input type="number" id="p2-pow" min="0" max="999"></div>
+            <div class="stat-box"><label>🧠 INTEL</label><input type="number" id="p2-int" min="0" max="999"></div>
+            <div class="stat-box"><label>⚔ SKILL</label><input type="number" id="p2-skl" min="0" max="999"></div>
+            <div class="stat-box"><label>💨 SPEED</label><input type="number" id="p2-spd" min="0" max="999"></div>
+            <div class="stat-box"><label>🛡 DEFENSE</label><input type="number" id="p2-def" min="0" max="999"></div>
+        </div>
+
+        <div class="adj-display" id="adj2">
+            <h4>STATS AJUSTADOS</h4>
+            <div id="adj2-rows"></div>
+            <div class="order-display" style="margin-top:8px">
+                <span class="order-label">ORDEM: </span>
+                <span class="order-val" id="adj2-order"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECRET SEASONING AND COMBINE BUTTON -->
+    <div class="full-width" style="text-align:center; margin-top: 10px;">
+        <label style="display:inline-block; margin-right: 10px;">Tempero Secreto (Item):</label>
+        <select id="secret-seasoning" style="width:280px; display:inline-block; font-size: 16px;">
+            <option value="">(Nenhum)</option>
+            <option value="CrabsClaw">Crab's Claw / Arrow Head</option>
+            <option value="DoubleEdged">Double Edged / Durahan</option>
+            <option value="Mask">Mask / Joker</option>
+            <option value="DnaCapsule">DNA Capsule / Dragon</option>
+        </select>
+    </div>
+
+    <div class="full-width" style="text-align:center">
+        <button class="btn btn-primary" id="btn-combine">
+            ⚗ CALCULAR COMBINAÇÃO ⚗
+        </button>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="full-width panel" data-label="RESULTADO" id="results">
+        <div class="spinner" id="spinner">▸ CALCULANDO... ◂</div>
+        <div id="results-inner">
+            <div class="dadge-box" style="justify-content:center;">
+                <div class="dadge-text" style="color:var(--dim)">[ O resultado aparecerá aqui ]</div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Inclusão dos dados e motor de cálculos -->
+<script src="js/data.js"></script>
+<script src="js/save_parser.js"></script>
+<script src="js/breeding.js"></script>
+
+<script>
+    // Configurando Eventos de Input
+    document.getElementById('save-input1').addEventListener('change', (e) => {
+        if(e.target.files.length > 0) handleSaveFileDrop(e.target.files[0], '1');
+    });
+    document.getElementById('save-input2').addEventListener('change', (e) => {
+        if(e.target.files.length > 0) handleSaveFileDrop(e.target.files[0], '2');
+    });
+
+    // Inicialização do Formulário com o catálogo nativo de Data
+    window.addEventListener('DOMContentLoaded', () => {
+        const selects = ['p1-main','p1-sub','p2-main','p2-sub'];
+        selects.forEach(id => {
+            const sel = document.getElementById(id);
+            BREED_LIST.forEach(b => {
+                const opt = document.createElement('option');
+                opt.value = b; opt.textContent = b;
+                sel.appendChild(opt);
+            });
+        });
+
+        // Valores genéricos de demonstração (Default)
+        document.getElementById('p1-main').value = 'Tiger';
+        document.getElementById('p1-sub').value  = 'Suezo';
+        document.getElementById('p2-main').value = 'Zuum';
+        document.getElementById('p2-sub').value  = 'Suezo';
+
+        // Dispara o evento de mudança para carregar os stats base das raças iniciais automaticamente!
+        document.getElementById('p1-main').dispatchEvent(new Event('change'));
+        document.getElementById('p2-main').dispatchEvent(new Event('change'));
+    });
+</script>
+
+</body>
+</html>
